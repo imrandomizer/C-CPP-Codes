@@ -7,7 +7,7 @@ int knapsack(int W,int val[],int wt[],int n)
 {
     int i,w;
     int K[n+1][W+1];
-    int wg[n+1][W+1];
+    
     for(i=0;i<=n;i++)
     {
         for(w=0;w<=W;w++)
@@ -20,35 +20,21 @@ int knapsack(int W,int val[],int wt[],int n)
             else if(wt[i-1]<=w)
             {
                 K[i][w]=max(val[i-1]+K[i-1][w-wt[i-1]],K[i-1][w]);
-                if(val[i-1]+K[i-1][w-wt[i-1]]>K[i-1][w])
-                {
-                    wg[i][w]=wt[i-1]+wg[i-1][w-wt[i-1]];
-                }
-                else
-                {
-                    wg[i][w]=wg[i-1][w];
-                }
             }
             else
             {
                 K[i][w]=K[i-1][w];
-                wg[i][w]=wg[i-1][w];
             }
         }
     }
-    // checking if there are lower cost (weight) values for same fun value
-    int ans=wg[n][W];
+    // checking if there are lower cost (weight) values for same fun value 
+    // this can be done by looping i through [1,W] and finding the least w fow which w K[n][w] == K[n][W] 
+    int ans=W;
     for(i=W-1;i>=0;i--)
     {
-        if(K[n][i]==K[n][W])
-        {
-            if(wg[n][i]<ans)
-            {
-                ans=wg[n][i];
-            }
-        }
+        if(K[n][i] == K[n][W])
+            ans = i;
     }
-    //printf("%d %d\n",wg[n][W],K[n][W]);
     printf("%d %d\n",ans,K[n][W]);
 }
 int main()
